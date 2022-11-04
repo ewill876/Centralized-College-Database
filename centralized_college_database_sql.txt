@@ -1,0 +1,74 @@
+CREATE TABLE student (
+    stud_id INT PRIMARY KEY,
+    fname VARCHAR (40),
+    lname VARCHAR (40),
+    gender VARCHAR (1),
+    age INT,
+    contact_add INT,
+    stud_email VARCHAR (40),
+    stud_pass VARCHAR (40)
+);
+
+DROP TABLE student;
+
+CREATE TABLE courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR (40),
+    course_desc VARCHAR (40),
+    school_yr INT
+);
+
+CREATE TABLE instructor (
+    ins_ID INT PRIMARY KEY,
+    fname VARCHAR (40),
+    lname VARCHAR (40),
+    gender VARCHAR (1),
+    age INT,
+    contact_add INT,
+    iins_email VARCHAR (40),
+    ins_pass VARCHAR (40)
+);
+
+CREATE TABLE transaction (
+    trans_id INT PRIMARY KEY,
+    trans_name VARCHAR (40),
+    stud_id INT,
+    trans_date DATE,
+    FOREIGN KEY (stud_id) REFERENCES student (stud_id) ON DELETE SET NULL
+);
+
+CREATE TABLE subjects (
+    sub_id INT PRIMARY KEY,
+    name VARCHAR (40),
+    course_id INT,
+    FOREIGN KEY (course_id) REFERENCES courses (course_id) ON DELETE SET NULL
+);
+
+
+CREATE TABLE schedules (
+    sched_id INT PRIMARY KEY,
+    course_id INT,
+    sub_id INT,
+    ins_id INT,
+    stud_id INT,
+    day DATE,
+    time_start TIME,
+    time_end TIME,
+    FOREIGN KEY (course_id) REFERENCES courses (course_id) ON DELETE SET NULL,
+    FOREIGN KEY (sub_id) REFERENCES subjects (sub_id) ON DELETE SET NULL,
+    FOREIGN KEY (ins_id) REFERENCES instructor (ins_id) ON DELETE SET NULL,
+    FOREIGN KEY (stud_id) REFERENCES student (stud_id) ON DELETE SET NULL
+);
+
+DROP TABLE schedules;
+
+--EXTRACT DATE (DAY) FOR EACH SUBJECT 
+
+SELECT subjects.sub_id, name, day, time_start, time_end
+FROM subjects
+JOIN schedules
+ON subjects.sub_id = schedules.sub_id;
+
+--RETURN DAY FOR A PARTICULAR SUBJECT***PLEASE NOTE EACH TABLE WILL BE UPDATED 
+
+SELECT DAY ('1-11-2022');
